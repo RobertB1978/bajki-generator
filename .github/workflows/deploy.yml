@@ -23,6 +23,7 @@ jobs:
       - name: Deploy to Hetzner
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@${{ secrets.HETZNER_HOST }} << 'EOF'
+          set -euo pipefail
           cd /root/app
           git pull origin main
           docker-compose down
