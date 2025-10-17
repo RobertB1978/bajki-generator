@@ -1,0 +1,30 @@
+name: Deploy to Hetzner
+
+on:
+  push:
+    branches:
+      - main  # Upewnij się, że to twoja główna gałąź
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up SSH Key
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.HETZNER_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 22 "${{ secrets.HETZNER_HOST }}" >> ~/.ssh/known_hosts || true
+
+      - name: Deploy to Hetzner
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no root@${{ secrets.HETZNER_HOST }} << 'EOF'
+          cd /root/app
+          git pull origin main
+          docker-compose down
+          docker-compose up -d --build
+          EOF

@@ -1,0 +1,11 @@
+* 35f9ccb 2025-02-28 Update deploy.yml
+* 3987850 2025-02-28 Fix SSH Key and Deployment
+* d78da5f 2025-02-28 Fix SSH Key setup
+* 7099c43 2025-02-28 Update deploy.yml
+* 1471a6a 2025-02-28 Update deploy.yml
+* ec1ff8a 2025-02-27 Create deploy.yml
+* 1293464 2025-02-27 Dodano testowy plik
+* d6d2b81 2025-02-26 Update package.json
+* a5a01b6 2025-02-26 Update package.json
+* d003c5d 2025-02-26 Create package.json
+* 29ba41f 2025-02-26 Initial commit
