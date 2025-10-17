@@ -1,0 +1,11 @@
+{
+  "name": "bajki-generator",
+  "version": "1.0.0",
+  "description": "Projekt Bajki Generator",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
