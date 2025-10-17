@@ -1,0 +1,29 @@
+### Changed files in last commit:
+A	.github/workflows/deploy.yml
+M	README.md
+A	apps/.gitkeep
+A	migration_artifacts/history_fluxify_backup.txt
+A	package.json
+A	scripts/.gitkeep
+A	test.txt
+A	.gitignore
+A	LICENSE
+M	README.md
+A	apps/.gitkeep
+A	migration_artifacts/history_fluxify_backup.txt
+M	package.json
+A	scripts/.gitkeep
+M	test.txt
+
+### git remote -v:
+fluxify	https://github.com/RobertB1978/fluxify.git (fetch)
+fluxify	https://github.com/RobertB1978/fluxify.git (push)
+origin	https://github.com/RobertB1978/bajki-generator.git (fetch)
+origin	https://github.com/RobertB1978/bajki-generator.git (push)
+
+### Last 5 commits:
+e228be6 feat: merge fluxify history
+0f09352 Initial commit
+35f9ccb Update deploy.yml
+3987850 Fix SSH Key and Deployment
+d78da5f Fix SSH Key setup
