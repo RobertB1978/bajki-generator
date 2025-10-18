@@ -212,4 +212,5 @@ web/node_modules/
 web/dist/
 web/src/**/*.js
 web/src/**/*.d.ts
+!web/src/vite-env.d.ts
 *.tsbuildinfo
