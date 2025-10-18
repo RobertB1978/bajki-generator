@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bajki-generator"
+version = "0.1.0"
+description = "Proste narzędzia do generowania bajek po polsku."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "OpenAI Assistant" }
+]
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Text Processing :: Linguistic",
+    "Topic :: Artistic Software",
+]
+
+[project.urls]
+Homepage = "https://example.com/bajki-generator"
+Repository = "https://example.com/bajki-generator.git"
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]
+pythonpath = ["src"]
