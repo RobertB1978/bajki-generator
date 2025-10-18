@@ -1,4 +1,5 @@
 """Story generation helpers."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -52,7 +53,12 @@ class StoryGenerator:
             "wystarczy wiara w siebie, aby osiągnąć niemożliwe",
             "każdy dzień może być początkiem niezwykłej historii",
         ]
-        self._companions = ["wesoły smok", "mądra sowa", "śpiewający robot", "szalony wynalazca"]
+        self._companions = [
+            "wesoły smok",
+            "mądra sowa",
+            "śpiewający robot",
+            "szalony wynalazca",
+        ]
         self._places = [
             "zaczarowanej bibliotece",
             "świetlistej jaskini",
@@ -81,7 +87,9 @@ class StoryGenerator:
         lesson = choice(self._lessons)
 
         paragraphs: List[StorySegment] = []
-        introduction = template.introduction.format(hero=payload.hero, topic=payload.topic)
+        introduction = template.introduction.format(
+            hero=payload.hero, topic=payload.topic
+        )
         paragraphs.append(
             StorySegment(title="Początek przygody", text=fill(introduction, 100))
         )
@@ -119,12 +127,14 @@ class StoryGenerator:
             paragraphs.append(StorySegment(title="Wielki finał", text=fill(bonus, 100)))
 
         resolution = template.resolution.format(hero=payload.hero, lesson=lesson)
-        paragraphs.append(StorySegment(title="Szczęśliwe zakończenie", text=fill(resolution, 100)))
-
-        summary = (
-            f"{payload.hero} mierzy się z wyzwaniem związanym z {payload.topic} i odkrywa, że {lesson}."
+        paragraphs.append(
+            StorySegment(title="Szczęśliwe zakończenie", text=fill(resolution, 100))
         )
-        estimated_time = self._estimate_read_time(segment.text for segment in paragraphs)
+
+        summary = f"{payload.hero} mierzy się z wyzwaniem związanym z {payload.topic} i odkrywa, że {lesson}."
+        estimated_time = self._estimate_read_time(
+            segment.text for segment in paragraphs
+        )
 
         return StoryResponse(
             title=f"{payload.hero} i tajemnica {payload.topic}",
