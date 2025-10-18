@@ -31,6 +31,33 @@ cd ..
 
 Backend domyślnie udostępnia API pod `http://localhost:8000/api`, natomiast frontend pod `http://localhost:5173`.
 
+## Uruchomienie lokalne
+
+1. **Skonfiguruj zmienne środowiskowe.** Skopiuj plik `.env.example` do `.env` (backend) oraz do `web/.env.local` (frontend) i w razie potrzeby zaktualizuj wartości:
+   ```bash
+   cp .env.example .env
+   cp .env.example web/.env.local
+   ```
+   Backend korzysta z prefiksu `BAJKI_`, a frontend z `VITE_`. Dzięki temu konfiguracja API jest spójna dla wszystkich usług.
+2. **Utwórz i aktywuj wirtualne środowisko Pythona, a następnie zainstaluj zależności backendu:**
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -e .[dev]
+   ```
+3. **Zainstaluj zależności frontendowe:**
+   ```bash
+   cd web
+   npm install
+   cd ..
+   ```
+4. **Uruchom oba serwisy w trybie developerskim:**
+   ```bash
+   ./scripts/dev.sh
+   ```
+   Skrypt startuje backend FastAPI na porcie `8000` oraz frontend Vite na porcie `5173` z proxy na `/api`.
+5. **Opcjonalnie:** sprawdź API bezpośrednio z CLI – np. `python scripts/story_cli.py generate Mila --topic "zaczarowany las"`.
+
 ## Endpointy API
 
 - `GET /health` – prosty health check,
