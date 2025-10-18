@@ -1,4 +1,5 @@
 """Entry point for the Bajki Generator FastAPI service."""
+
 from __future__ import annotations
 
 from importlib.metadata import version

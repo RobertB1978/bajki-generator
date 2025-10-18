@@ -1,4 +1,5 @@
 """Story generation helpers."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -31,7 +32,9 @@ class StoryGenerator:
         self._settings = get_settings()
         self._templates: List[StoryTemplate] = [
             StoryTemplate(
-                introduction="{hero} wyrusza na wyprawę, aby odkryć tajemnicę związaną z {topic}.",
+                introduction=(
+                    "{hero} wyrusza na wyprawę, aby odkryć tajemnicę związaną z {topic}."
+                ),
                 challenges=[
                     "Po drodze spotyka {companion}, który dołącza do przygody.",
                     "Muszą wspólnie rozwiązać zagadkę ukrytą w {place}.",
@@ -39,12 +42,18 @@ class StoryGenerator:
                 resolution="Dzięki odwadze i uśmiechowi {hero} odkrywa, że {lesson}.",
             ),
             StoryTemplate(
-                introduction="W miasteczku niedaleko lasu mieszkał {hero}, marzący o niezwykłej przygodzie z {topic}.",
+                introduction=(
+                    "W miasteczku niedaleko lasu mieszkał {hero}, marzący o niezwykłej "
+                    "przygodzie z {topic}."
+                ),
                 challenges=[
                     "Niespodziewanie pojawia się wiadomość od tajemniczego przyjaciela.",
                     "Razem przygotowują magiczny plan, aby odmienić los mieszkańców miasteczka.",
                 ],
-                resolution="Wieczorem wszyscy świętują, a {hero} obiecuje dzielić się radością każdego dnia.",
+                resolution=(
+                    "Wieczorem wszyscy świętują, a {hero} obiecuje dzielić się radością "
+                    "każdego dnia."
+                ),
             ),
         ]
         self._lessons = [
@@ -52,7 +61,12 @@ class StoryGenerator:
             "wystarczy wiara w siebie, aby osiągnąć niemożliwe",
             "każdy dzień może być początkiem niezwykłej historii",
         ]
-        self._companions = ["wesoły smok", "mądra sowa", "śpiewający robot", "szalony wynalazca"]
+        self._companions = [
+            "wesoły smok",
+            "mądra sowa",
+            "śpiewający robot",
+            "szalony wynalazca",
+        ]
         self._places = [
             "zaczarowanej bibliotece",
             "świetlistej jaskini",
@@ -81,7 +95,9 @@ class StoryGenerator:
         lesson = choice(self._lessons)
 
         paragraphs: List[StorySegment] = []
-        introduction = template.introduction.format(hero=payload.hero, topic=payload.topic)
+        introduction = template.introduction.format(
+            hero=payload.hero, topic=payload.topic
+        )
         paragraphs.append(
             StorySegment(title="Początek przygody", text=fill(introduction, 100))
         )
@@ -119,12 +135,17 @@ class StoryGenerator:
             paragraphs.append(StorySegment(title="Wielki finał", text=fill(bonus, 100)))
 
         resolution = template.resolution.format(hero=payload.hero, lesson=lesson)
-        paragraphs.append(StorySegment(title="Szczęśliwe zakończenie", text=fill(resolution, 100)))
+        paragraphs.append(
+            StorySegment(title="Szczęśliwe zakończenie", text=fill(resolution, 100))
+        )
 
         summary = (
-            f"{payload.hero} mierzy się z wyzwaniem związanym z {payload.topic} i odkrywa, że {lesson}."
+            f"{payload.hero} mierzy się z wyzwaniem związanym z {payload.topic} i "
+            f"odkrywa, że {lesson}."
         )
-        estimated_time = self._estimate_read_time(segment.text for segment in paragraphs)
+        estimated_time = self._estimate_read_time(
+            segment.text for segment in paragraphs
+        )
 
         return StoryResponse(
             title=f"{payload.hero} i tajemnica {payload.topic}",

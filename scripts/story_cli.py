@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Command line helper for generating sample stories."""
+
 from __future__ import annotations
 
 import json

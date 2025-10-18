@@ -1,5 +1,8 @@
 """Story endpoints."""
+
 from __future__ import annotations
+
+from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
@@ -12,7 +15,7 @@ router = APIRouter(prefix="/stories", tags=["stories"])
 @router.post("", response_model=StoryResponse)
 def create_story(
     payload: StoryRequest,
-    generator: StoryGenerator = Depends(build_story_generator),
+    generator: Annotated[StoryGenerator, Depends(build_story_generator)],
 ) -> StoryResponse:
     """Generate a fresh bedtime story."""
 
