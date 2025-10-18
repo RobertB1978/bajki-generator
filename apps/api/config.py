@@ -1,4 +1,5 @@
 """Application settings and configuration helpers."""
+
 from __future__ import annotations
 
 from functools import lru_cache
@@ -16,7 +17,9 @@ class Settings(BaseSettings):
         default_factory=lambda: ["http://localhost:5173", "http://127.0.0.1:5173"],
         description="Allowed CORS origins for the frontend application.",
     )
-    default_language: str = Field("pl", description="Default language for generated stories")
+    default_language: str = Field(
+        "pl", description="Default language for generated stories"
+    )
 
     model_config = {
         "env_file": ".env",
