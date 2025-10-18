@@ -28,8 +28,10 @@ export interface StoryPayload {
   length: StoryLength
 }
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? '/api'
+
 const api = axios.create({
-  baseURL: '/api'
+  baseURL: apiBaseUrl
 })
 
 export async function createStory(payload: StoryPayload): Promise<StoryResponse> {
