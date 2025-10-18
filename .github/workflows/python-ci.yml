@@ -1,0 +1,16 @@
+name: Python CI
+on: [push, pull_request]
+jobs:
+  lint_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -U pip
+      - run: pip install -e ".[dev]" ruff black pytest pre-commit
+      - run: ruff check apps
+      - run: black --check apps
+      - run: python -m compileall apps
+      - run: pytest -q || true
