@@ -19,9 +19,15 @@ def create_app() -> FastAPI:
 
     app = FastAPI(title="Bajki Generator API", version=version("fastapi"))
 
+    allowed_origins = {
+        "http://127.0.0.1:5173",
+        "http://localhost:5173",
+        *settings.frontend_origin,
+    }
+
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.frontend_origin,
+        allow_origins=sorted(allowed_origins),
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

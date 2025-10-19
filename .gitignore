@@ -213,4 +213,5 @@ web/dist/
 web/src/**/*.js
 web/src/**/*.d.ts
 !web/src/vite-env.d.ts
+!web/src/lib/
 *.tsbuildinfo
