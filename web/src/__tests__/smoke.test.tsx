@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { render } from "@testing-library/react";
-import Generate from "../pages/Generate";
+import App from "../pages/App";
 
 describe("Smoke", () => {
   it("renders generator header", () => {
-    const { getByText } = render(<Generate />);
-    expect(getByText("Generator bajek")).toBeInTheDocument();
+    const { getByText } = render(<App />);
+    expect(getByText("Bajki Generator")).toBeInTheDocument();
   });
 });

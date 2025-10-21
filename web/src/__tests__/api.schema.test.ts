@@ -1,24 +1,28 @@
-import { describe, it, expect } from "vitest";
-import { StoryRequest, StoryResponse } from "../lib/api";
+import type { AxiosResponse } from "axios";
+import { describe, expect, it } from "vitest";
+import { api, createStory } from "../lib/api";
 
-describe("API schemas", () => {
-  it("validates request", () => {
-    const parsed = StoryRequest.parse({
-      hero: "Ala", age: 5, topic: "las", mood: "pogodny", length: "short"
-    });
-    expect(parsed.hero).toBe("Ala");
-  });
-
-  it("validates response shape", () => {
-    const sample = {
-      title: "Tytuł",
+describe("createStory", () => {
+  it("posts payload and returns story data", async () => {
+    const mockData: Awaited<ReturnType<typeof createStory>> = {
+      title: "Przygoda Ala",
       hero: "Ala",
-      topic: "las",
-      length: "short",
-      summary: "…",
-      story: [{ title: "Start", text: "Dawno dawno…" }]
+      mood: "pogodny",
+      story: [{ title: "Rozdział 1", text: "Ala..." }]
     };
-    const parsed = StoryResponse.parse(sample);
-    expect(parsed.story[0].text.length).toBeGreaterThan(0);
+
+    const originalPost = api.post;
+    api.post = (async (path, payload) => {
+      expect(path).toBe("/api/stories");
+      expect(payload).toEqual({ hero: "Ala", mood: "pogodny" });
+      return Promise.resolve({ data: mockData } as AxiosResponse<typeof mockData>);
+    }) as typeof api.post;
+
+    try {
+      const result = await createStory("Ala", "pogodny");
+      expect(result).toEqual(mockData);
+    } finally {
+      api.post = originalPost;
+    }
   });
 });
