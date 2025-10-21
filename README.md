@@ -1,97 +1,57 @@
 # Bajki Generator
 
-Nowoczesna aplikacja do tworzenia i czytania bajek audio po polsku. Projekt składa się z:
+Aplikacja do generowania bajek z frontendem Vite/React oraz funkcjami Python hostowanymi na Vercel.
 
-- **FastAPI** (`apps/`) odpowiadającego za generowanie opowieści,
-- **Vite + React** (`web/`) zapewniającego interaktywny interfejs webowy,
-- **skryptów developerskich** (`scripts/`) ułatwiających start projektu oraz szybką prezentację API.
+## Run locally
 
-## Wymagania
-
-- Python 3.11+
-- Node.js 18+
-- npm lub pnpm (w przykładach używamy `npm`)
-
-## Szybki start
-
-```bash
-# Zainstaluj zależności backendu
-python -m venv .venv
-source .venv/bin/activate
-pip install -e .[dev]
-
-# Zainstaluj zależności frontendowe
-cd web
-npm install
-cd ..
-
-# Uruchom środowisko developerskie (backend + frontend)
-./scripts/dev.sh
-```
-
-Backend domyślnie udostępnia API pod `http://localhost:8000/api`, natomiast frontend pod `http://localhost:5173`.
-
-## Uruchomienie lokalne
-
-1. **Skonfiguruj zmienne środowiskowe.** Skopiuj plik `.env.example` do `.env` (backend) oraz do `web/.env.local` (frontend) i w razie potrzeby zaktualizuj wartości:
+1. **Zainstaluj zależności frontendowe.**
    ```bash
-   cp .env.example .env
-   cp .env.example web/.env.local
+   npm install --prefix web
    ```
-   Backend korzysta z prefiksu `BAJKI_`, a frontend z `VITE_`. Dzięki temu konfiguracja API jest spójna dla wszystkich usług.
-2. **Utwórz i aktywuj wirtualne środowisko Pythona, a następnie zainstaluj zależności backendu:**
+2. **(Opcjonalnie) Przygotuj wirtualne środowisko Pythona do testów.**
    ```bash
    python -m venv .venv
    source .venv/bin/activate
-   pip install -e .[dev]
+   pip install pytest
    ```
-3. **Zainstaluj zależności frontendowe:**
+3. **Przygotuj zmienne środowiskowe Supabase.** Skopiuj `web/.env.example` do `web/.env` i uzupełnij wartości (`VITE_SUPABASE_URL`, `VITE_SUPABASE_KEY`). Brak wartości oznacza, że Supabase nie będzie inicjowane, ale aplikacja nadal działa.
+4. **Uruchom środowisko developerskie.** Najwygodniej przez Vercel Dev, który obsługuje funkcje Pythona i frontend.
    ```bash
-   cd web
-   npm install
-   cd ..
+   npm run build --prefix web
+   vercel dev
    ```
-4. **Uruchom oba serwisy w trybie developerskim:**
+   Alternatywnie możesz zbudować frontend i uruchomić statyczny podgląd:
    ```bash
-   ./scripts/dev.sh
+   npm run build --prefix web
+   npm run preview --prefix web
+   # funkcje /api działają po wdrożeniu na Vercel
    ```
-   Skrypt startuje backend FastAPI na porcie `8000` oraz frontend Vite na porcie `5173` z proxy na `/api`.
-5. **Opcjonalnie:** sprawdź API bezpośrednio z CLI – np. `python scripts/story_cli.py generate Mila --topic "zaczarowany las"`.
+5. **Testy i smoke:**
+   ```bash
+   npm run test --prefix web     # Vitest
+   pytest -q                     # Pytest dla funkcji Python
+   npm run smoke --prefix web    # Smoke test (wymaga działającego hosta pod SMOKE_BASE)
+   ```
 
-## Endpointy API
+## Deploy
 
-- `GET /health` – prosty health check,
-- `POST /api/stories` – generowanie bajki na podstawie danych wejściowych:
-  ```json
-  {
-    "hero": "Mila",
-    "age": 6,
-    "topic": "zaczarowany las",
-    "mood": "pogodny",
-    "length": "short"
-  }
-  ```
+1. Zaloguj się do Vercel i wskaż repozytorium. W projekcie ustaw katalog główny na root repozytorium (plik `vercel.json` zarządza buildem).
+2. W sekcji *Environment Variables* dodaj `VITE_SUPABASE_URL` oraz `VITE_SUPABASE_KEY` dla wszystkich środowisk. Frontend pobiera je z `import.meta.env`.
+3. Wdrażaj jak zwykle – Vercel użyje `vercel.json`, aby zbudować aplikację (`web/`) i wystawić funkcje serverless (`api/`).
+4. Po wdrożeniu sprawdź:
+   ```bash
+   curl -s https://<twoja-domena>.vercel.app/api/health
+   curl -s -X POST https://<twoja-domena>.vercel.app/api/stories \
+     -H 'Content-Type: application/json' \
+     -d '{"hero":"Ala","mood":"pogodny"}'
+   ```
 
-Przykładowe użycie z CLI:
-
-```bash
-python scripts/story_cli.py generate Mila --topic "zaczarowany las"
-```
-
-## Struktura katalogów
+## Struktura
 
 ```
-apps/           # Kod FastAPI
-  api/
-    main.py     # Punkt wejścia aplikacji
-    routes/     # Routery API
-    services/   # Warstwa logiki biznesowej
-scripts/
-  dev.sh        # Uruchamia backend + frontend w trybie developerskim
-  story_cli.py  # Prostą interakcja z API z linii komend
-web/            # Aplikacja React + Vite
-```
-
-## Licencja
-
-Projekt jest dostępny na licencji MIT.
+vercel.json        # Konfiguracja Vercel (frontend + Python functions)
+api/                # Funkcje serverless (health, stories)
+web/                # Frontend Vite/React (dist jako output)
+  scripts/smoke.mjs # Smoke test endpointów w środowisku Vercel/local
+  .env.example      # Placeholdery zmiennych Supabase
+``` 
