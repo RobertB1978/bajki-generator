@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "buildCommand": "npm --prefix web ci && npm --prefix web run build",
+  "outputDirectory": "web/dist",
+  "functions": {
+    "api/*.py": { "runtime": "python3.11" }
+  },
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1.py" },
+    { "src": "^(?!/api/).*", "dest": "/web/dist/index.html" }
+  ]
+}
