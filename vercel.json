@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "web/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "web/dist",
+        "buildCommand": "npm install && npm run build"
+      }
+    },
+    { "src": "api/*.py", "use": "@vercel/python" }
+  ],
+  "functions": {
+    "api/**/*.py": { "runtime": "python3.11" }
+  },
+  "routes": [
+    { "src": "^/api/(.*)$", "dest": "/api/$1.py" },
+    { "handle": "filesystem" },
+    { "src": "^(?!/api/).*", "dest": "/index.html" }
+  ]
+}
