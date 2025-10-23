@@ -5,4 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "bajki-generator"
 version = "0.1.0"
-dependencies = []
+dependencies = [
+    "fastapi>=0.110",
+    "pydantic>=2.5",
+    "pydantic-settings>=2.0",
+    "uvicorn[standard]>=0.24",
+    "httpx>=0.28",
+    "requests>=2.31",
+]
